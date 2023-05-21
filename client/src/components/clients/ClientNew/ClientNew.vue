@@ -2,9 +2,7 @@
   <div class="client-new">
     <CustomHeader headerTag="h1"> Novy kontakt </CustomHeader>
     <white-container>
-      <template #white-container>
-        <ClientForm @submit-form="submitForm" ref="form" />
-      </template>
+      <ClientForm @submit-form="submitForm" ref="form" />
     </white-container>
   </div>
 </template>

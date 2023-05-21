@@ -6,7 +6,6 @@
     >
       Zakladni udaje
     </CustomHeader>
-
     <el-form
       :model="form"
       :rules="rules"
@@ -145,6 +144,7 @@ export default {
       default: true,
     },
   },
+
   data() {
     return {
       form: {
@@ -216,40 +216,24 @@ export default {
     };
   },
 
+  mounted() {
+    if (Object.keys(this.clientData).length > 0) {
+      this.form = { ...this.form, ...this.clientData };
+    }
+  },
+
+  watch: {
+    clientData(newData) {
+      if (Object.keys(newData).length > 0) {
+        this.form = { ...this.form, ...newData };
+      }
+    },
+  },
+
   methods: {
     updateForm(newData) {
       this.form = { ...this.form, ...newData };
     },
-
-    // async fetchClientData(company_number) {
-    //   try {
-    //     const { data } = await this.$apollo.query({
-    //       query: ALL_COMPANY_INFOS_BY_NUMBER,
-
-    //       variables: { companyNumber: company_number },
-    //     });
-
-    //     if (data && data.allCompanyInfos && data.allCompanyInfos.length > 0) {
-    //       this.companyDataLoaded = true;
-
-    //       const client = data.allCompanyInfos[0];
-    //       this.form.name = client.name || "";
-    //       this.form.vat_number = client.vat_no || "";
-    //       this.form.phone = client.phone || client.mobile || "";
-    //       this.form.email = client.email || "";
-    //       this.form.web = client.web || "";
-    //       this.form.street = client.address_street || "";
-    //       this.form.city = client.address_city || "";
-    //       this.form.postcode = client.address_postcode || "";
-    //       this.form.country_code = client.country_code || "";
-    //     } else {
-    //       console.log("No client found with the provided company number");
-    //       this.companyDataLoaded = false;
-    //     }
-    //   } catch (error) {
-    //     console.error("Query error:", error);
-    //   }
-    // },
 
     async fetchClientData(company_number) {
       try {
@@ -261,6 +245,7 @@ export default {
         if (data && data.allCompanyInfos && data.allCompanyInfos.length > 0) {
           this.companyDataLoaded = true;
 
+          //Using $set ensures that the new values are properly tracked and triggers reactivity.
           const client = data.allCompanyInfos[0];
           this.$set(this.form, "name", client.name || "");
           this.$set(this.form, "vat_number", client.vat_no || "");
@@ -293,26 +278,13 @@ export default {
 
     resetForm() {
       this.$refs.form.resetFields();
-    },
-  },
-
-  mounted() {
-    if (Object.keys(this.clientData).length > 0) {
-      this.form = { ...this.form, ...this.clientData };
-    }
-  },
-
-  watch: {
-    clientData(newData) {
-      if (Object.keys(newData).length > 0) {
-        this.form = { ...this.form, ...newData };
-      }
+      this.companyDataLoaded = false;
     },
   },
 };
 //imrovements:
 //form field validation - e.g. if email address is in the correct format
-//loading and error states
+//error states
 </script>
 
 <style lang="scss" scoped>
@@ -326,13 +298,16 @@ export default {
       display: flex;
       align-items: center;
     }
+
     &--column {
       display: flex;
       width: 75%;
     }
+
     &--button {
       margin-left: 10px;
     }
+
     &--alert {
       line-height: 0;
       background-color: $white;
@@ -346,6 +321,7 @@ export default {
 .country-select {
   width: 100%;
 }
+
 .buttons-container {
   display: flex;
   justify-content: flex-end;

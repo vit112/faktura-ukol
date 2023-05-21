@@ -2,13 +2,11 @@
   <div class="client-details">
     <CustomHeader headerTag="h1"> Seznam Klientu </CustomHeader>
     <white-container>
-      <template #white-container>
-        <ClientForm
-          :clientData="clientData"
-          @submit-form="editClient"
-          :show-dropdown="false"
-        />
-      </template>
+      <ClientForm
+        :clientData="clientData"
+        @submit-form="editClient"
+        :show-dropdown="false"
+      />
     </white-container>
     <ClientInvoices :clientId="clientData.id" />
   </div>

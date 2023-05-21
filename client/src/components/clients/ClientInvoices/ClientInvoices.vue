@@ -1,82 +1,78 @@
 <template>
   <div class="client-invoices">
     <WhiteContainer class="white-container">
-      <template #white-container>
-        <div v-if="loading">Loading...</div>
+      <div v-if="loading">Loading...</div>
+      <div v-else>
+        <CustomHeader
+          headerTag="h1"
+          :image="require('@/assets/ico-basic-info.svg')"
+          class="client-invoices__header"
+        >
+          Propojene faktury
+        </CustomHeader>
+        <div v-if="paginatedInvoices.length === 0">No invoices available</div>
         <div v-else>
-          <CustomHeader
-            headerTag="h1"
-            :image="require('@/assets/ico-basic-info.svg')"
-            class="client-invoices__header"
-          >
-            Propojene faktury
-          </CustomHeader>
-          <div v-if="paginatedInvoices.length === 0">No invoices available</div>
-          <div v-else>
-            <div class="client-invoices__upper-wrapper">
-              <UnpaidFilterSwitch
-                @switch-toggled="handleSwitchToggle"
-                class="client-invoices__switch"
-              ></UnpaidFilterSwitch>
-
-              <SearchGeneral
-                placeholder="Hledat fakturu"
-                @search-term-updated="searchInvoices"
-                class="client-invoices__search"
-              />
-            </div>
-            <!-- <el-table :data="filteredInvoices" style="width: 100%"> -->
-            <el-table
-              :data="paginatedInvoices"
-              style="width: 100%"
-              class="client-invoices__table"
-            >
-              <el-table-column
-                prop="number"
-                label="Cislo"
-                sortable
-              ></el-table-column>
-              <el-table-column
-                prop="due_on"
-                label="Splatnost"
-                sortable
-              ></el-table-column>
-              <el-table-column
-                prop="kind"
-                label="Typ dokladu"
-                sortable
-              ></el-table-column>
-              <el-table-column label="Castka" sortable>
-                <template slot-scope="scope">
-                  {{ scope.row.total_float }} {{ scope.row.currency }}
-                </template>
-              </el-table-column>
-
-              <el-table-column
-                prop="state"
-                label="Stav"
-                sortable
-              ></el-table-column>
-              <el-table-column label="Zaplaceno?" sortable>
-                <template slot-scope="scope">
-                  <el-checkbox
-                    :value="scope.row.state === 'paid'"
-                    disabled
-                  ></el-checkbox>
-                </template>
-              </el-table-column>
-            </el-table>
-            <el-pagination
-              @current-change="handleCurrentChange"
-              :current-page="currentPage"
-              :page-size="pageSize"
-              layout="prev, pager, next"
-              :total="paginatedInvoices.length"
-            >
-            </el-pagination>
+          <div class="client-invoices__upper-wrapper">
+            <UnpaidFilterSwitch
+              @switch-toggled="handleSwitchToggle"
+              class="client-invoices__switch"
+            ></UnpaidFilterSwitch>
+            <SearchGeneral
+              placeholder="Hledat fakturu"
+              @search-term-updated="searchInvoices"
+              class="client-invoices__search"
+            />
           </div>
+          <!-- <el-table :data="filteredInvoices" style="width: 100%"> -->
+          <el-table
+            :data="paginatedInvoices"
+            style="width: 100%"
+            class="client-invoices__table"
+          >
+            <el-table-column
+              prop="number"
+              label="Cislo"
+              sortable
+            ></el-table-column>
+            <el-table-column
+              prop="due_on"
+              label="Splatnost"
+              sortable
+            ></el-table-column>
+            <el-table-column
+              prop="kind"
+              label="Typ dokladu"
+              sortable
+            ></el-table-column>
+            <el-table-column label="Castka" sortable>
+              <template slot-scope="scope">
+                {{ scope.row.total_float }} {{ scope.row.currency }}
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="state"
+              label="Stav"
+              sortable
+            ></el-table-column>
+            <el-table-column label="Zaplaceno?" sortable>
+              <template slot-scope="scope">
+                <el-checkbox
+                  :value="scope.row.state === 'paid'"
+                  disabled
+                ></el-checkbox>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            layout="prev, pager, next"
+            :total="filteredInvoices.length"
+          >
+          </el-pagination>
         </div>
-      </template>
+      </div>
     </WhiteContainer>
   </div>
 </template>

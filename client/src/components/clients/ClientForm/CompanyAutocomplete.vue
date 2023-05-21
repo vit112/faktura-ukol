@@ -15,7 +15,7 @@
             <div class="dropdown--company-number">
               ICO: {{ item.company_number }}
             </div>
-            <div class="dropdown--copany_address">
+            <div class="dropdown--company_address">
               {{ item.address_city }}, {{ item.address_postcode }}
             </div>
           </div>
@@ -94,6 +94,7 @@ export default {
     "form.name": function (newVal) {
       this.companyName = newVal;
     },
+
     companyName(newVal, oldVal) {
       if (newVal !== oldVal) {
         const updatedForm = { ...this.form, name: newVal };

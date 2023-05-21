@@ -2,28 +2,26 @@
   <div class="clients-list">
     <CustomHeader headerTag="h1"> Seznam Kontaktu </CustomHeader>
     <WhiteContainer class="white-container">
-      <template #white-container>
-        <div class="clients-list__upper-wrapper">
-          <CombinedButton
-            iconClass="el-icon-plus"
-            buttonText="Pridat kontakt"
-            buttonType="primary"
-            @action="addNewClient"
-            class="clients-list__client-button"
-          />
-          <SearchGeneral @search-term-updated="updateFilteredClients" />
-        </div>
-        <div class="clients-list__sortable-table-wrapper">
-          <SortableTable
-            :filteredClients="filteredClients"
-            :current-page="currentPage"
-            @edit="redirectToEdit"
-            @delete="deleteContact"
-            @sort-change="handleSortChange"
-            @page-change="handlePageChange"
-          />
-        </div>
-      </template>
+      <div class="clients-list__upper-wrapper">
+        <CombinedButton
+          iconClass="el-icon-plus"
+          buttonText="Pridat kontakt"
+          buttonType="primary"
+          @action="addNewClient"
+          class="clients-list__client-button"
+        />
+        <SearchGeneral @search-term-updated="updateFilteredClients" />
+      </div>
+      <div class="clients-list__sortable-table-wrapper">
+        <SortableTable
+          :filteredClients="filteredClients"
+          :current-page="currentPage"
+          @edit="redirectToEdit"
+          @delete="deleteContact"
+          @sort-change="handleSortChange"
+          @page-change="handlePageChange"
+        />
+      </div>
     </WhiteContainer>
   </div>
 </template>
@@ -57,13 +55,6 @@ export default {
   },
   async created() {
     await this.fetchClientData();
-  },
-
-  watch: {
-    searchTerm() {
-      // Accessing the computed property will cause it to update
-      this.filteredClients;
-    },
   },
 
   computed: {
